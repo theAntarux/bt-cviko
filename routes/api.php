@@ -5,13 +5,36 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\PostController;
 
-/*
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-*/
+use App\Http\Controllers\BookApiController;
+use App\Http\Controllers\BookRestController;
+use App\Http\Controllers\BookRpcController;
+use App\Http\Controllers\BookSacController;
 
 Route::apiResource('posts', PostController::class);
 
+Route::prefix('books')->group(function () {
+    Route::prefix('rpc')->group(function () {
+        Route::post('{id}/borrow', [BookRpcController::class, 'borrowBook']);
+        Route::post('{id}/return', [BookRpcController::class, 'returnBook']);
+    });
 
+    Route::get('sac/{id}', BookSacController::class);
 
+    Route::prefix('rest')->group(function () {
+        Route::get('/', [BookRestController::class, 'index']);
+        Route::get('create', [BookRestController::class, 'create']);
+        Route::post('/', [BookRestController::class, 'store']);
+        Route::get('{id}', [BookRestController::class, 'show']);
+        Route::get('{id}/edit', [BookRestController::class, 'edit']);
+        Route::patch('{id}', [BookRestController::class, 'update']);
+        Route::delete('{id}', [BookRestController::class, 'destroy']);
+    });
+
+    Route::prefix('api')->group(function () {
+        Route::get('/', [BookApiController::class, 'index']);
+        Route::post('/', [BookApiController::class, 'store']);
+        Route::get('{id}', [BookApiController::class, 'show']);
+        Route::patch('{id}', [BookApiController::class, 'update']);
+        Route::delete('{id}', [BookApiController::class, 'destroy']);
+    });
+});
