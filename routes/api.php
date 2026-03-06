@@ -10,6 +10,9 @@ use App\Http\Controllers\BookRestController;
 use App\Http\Controllers\BookRpcController;
 use App\Http\Controllers\BookSacController;
 
+use App\Http\Controllers\TimeApiController;
+use App\Http\Controllers\TimeRpcController;
+
 Route::apiResource('posts', PostController::class);
 
 Route::prefix('books')->group(function () {
@@ -37,4 +40,9 @@ Route::prefix('books')->group(function () {
         Route::patch('{id}', [BookApiController::class, 'update']);
         Route::delete('{id}', [BookApiController::class, 'destroy']);
     });
+});
+
+Route::prefix('time')->group(function () {
+    Route::get('/getTime', [TimeApiController::class, 'getTime']);
+    Route::get('/showTime', [TimeRpcController::class, 'showTime']);
 });
