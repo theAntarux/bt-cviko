@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleController;
 
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ThankyouController;
+use App\Http\Controllers\ProductController;
+
 Route::prefix("profile")->group(function () {
     Route::get("/create", [ProfileController::class, "showForm"]);
     Route::post("/result", [ProfileController::class, "processForm"]);
@@ -16,24 +20,13 @@ Route::prefix("example")->group(function () {
     Route::post("/result", [ExampleController::class, "processForm"]);
 });
 
-Route::get('/', function () {
-    return view('site.home');
-});
+// Basic controller
+Route::get("/", [PageController::class, "home"]);
+Route::get("/about", [PageController::class, "about"]);
+Route::get("/contact", [PageController::class, "contact"]);
 
-Route::get('/about', function () {
-    return view('site.about');
-});
+// Single action controller
+Route::get("thankyou", ThankyouController::class);
 
-Route::get('/contact', function () {
-    return view('site.contact');
-});
-
-Route::post('/contact', function (Request $request) {
-    $data = $request->validate([
-        'name'    => ['required', 'min:2'],
-        'email'   => ['required', 'email'],
-        'message' => ['required', 'min:5'],
-    ]);
-
-    return view('site.thanks', $data);
-});
+// Resource controller
+Route::resource("products", ProductController::class);
