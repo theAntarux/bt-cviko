@@ -13,6 +13,9 @@ use App\Http\Controllers\BookSacController;
 use App\Http\Controllers\TimeApiController;
 use App\Http\Controllers\TimeRpcController;
 
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\CategoryController;
+
 Route::apiResource('posts', PostController::class);
 
 Route::prefix('books')->group(function () {
@@ -45,4 +48,11 @@ Route::prefix('books')->group(function () {
 Route::prefix('time')->group(function () {
     Route::get('/getTime', [TimeApiController::class, 'getTime']);
     Route::get('/showTime', [TimeRpcController::class, 'showTime']);
+});
+
+Route::prefix('notes')->group(function () {
+    Route::apiResource('notes', NoteController::class);
+    Route::apiResource('categories', CategoryController::class);
+
+    Route::get('/notes/pinned', [NoteController::class, 'pinnedNotes']);
 });
