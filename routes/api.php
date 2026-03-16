@@ -51,8 +51,10 @@ Route::prefix('time')->group(function () {
 });
 
 Route::prefix('notes')->group(function () {
-    Route::apiResource('notes', NoteController::class);
+    Route::apiResource('/', NoteController::class);
     Route::apiResource('categories', CategoryController::class);
 
-    Route::get('/notes/pinned', [NoteController::class, 'pinnedNotes']);
+    Route::get('pinned', [NoteController::class, 'pinnedNotes']);
+    Route::post('{id}/publish', [NoteController::class, 'publish']);
+    Route::get('search', [NoteController::class, 'search']);
 });
